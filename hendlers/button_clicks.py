@@ -12,6 +12,8 @@ router = Router()
 
 class Form(StatesGroup):
     description = State()
+class Meeting(StatesGroup):
+    meeting_link = State()
 
 @router.callback_query(F.data == 'main_back')
 async def start_message_back(callback: types.CallbackQuery):
@@ -162,11 +164,20 @@ async def hiring_video_menu(callback: types.CallbackQuery):
         reply_markup=nav.choose_video_duration()
     )
 #
-#
+#Заказ времени
 #
 @router.callback_query(lambda query: query.data.startswith('sec'))
 async def write_voice_description(callback: types.CallbackQuery, state: FSMContext):
     await state.update_data(what_ordered=callback.data)
-    await callback.message.answer('Напишите текст',
+    await callback.message.answer('Напишите что бы Вы хотели видеть',
                                   reply_markup=ReplyKeyboardRemove())
     await state.set_state(Form.description)
+#
+#Заказ видео-звонка
+#
+@router.callback_query(lambda query: query.data.startswith('videocall'))
+async def write_voice_description(callback: types.CallbackQuery, state: FSMContext):
+    await state.update_data(what_ordered=callback.data)
+    await callback.message.answer('Укажите ссылку и соц сеть',
+                                  reply_markup=ReplyKeyboardRemove())
+    await state.set_state(Meeting.meeting_link)

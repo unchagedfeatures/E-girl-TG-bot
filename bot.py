@@ -33,6 +33,34 @@ class Form(StatesGroup):
     description = State()
 class Orders(StatesGroup):
     order_type = State()
+class Meeting(StatesGroup):
+    meeting_link = State()
+
+@dp.message(StateFilter(Meeting.meeting_link), F.text)
+async def edit_description(callback: types.CallbackQuery, state: FSMContext):
+    await state.update_data(meeting_link=callback.text)
+    user_data = await state.get_data()
+    meeting_link = user_data.get('meeting_link')
+    user_id = callback.from_user.id
+    what_order = user_data.get('what_ordered')
+    result = db.get_balance(cursor, user_id)
+    money_value = result[0]
+    if what_order in prices.price_map:
+        price = prices.price_map[what_order]
+        if money_value >= price:
+            cursor.execute("UPDATE users SET money = money - ? WHERE user_id = ?",  (price, user_id))
+            result = db.get_balance(cursor, user_id)
+            money_value = result[0]
+            cursor.execute("INSERT INTO 'orders' (who_pays_id, what_ordered, meeting_link) VALUES (?, ?, ?)", (user_id, what_order, meeting_link))
+            cursor.execute("UPDATE users SET count_orders= count_orders + 1 WHERE user_id=?;", (user_id, ))
+            await callback.answer(f'Цена за это составит {price} RUB.\nНа Вашем балансе {money_value} RUB. \nУслуга оплачена.', reply_markup=nav.back_from_description())
+        else:
+            await callback.answer(f'На Вашем счету недостаточно средств. \n Цена за это составит {price} RUB.\n На Вашем балансе {money_value} RUB. \n', reply_markup=nav.unsucces_payment())
+    else:
+        await callback.answer(f'Случилась техническая ошибка.', reply_markup=nav.back_from_description)
+        db.conn.commit()
+    await state.clear()
+    db.conn.commit()
 
 
 @dp.message(StateFilter(Form.description), F.text)
@@ -58,23 +86,19 @@ async def edit_description(callback: types.CallbackQuery, state: FSMContext):
             if BadUser == False:
                 cursor.execute("INSERT INTO 'orders' (who_pays_id, what_ordered, order_description) VALUES (?, ?, ?)", (user_id, what_order, description))
                 cursor.execute("UPDATE users SET count_orders= count_orders + 1 WHERE user_id=?;", (user_id, ))
-                await callback.answer(f'Цена за это составит {price} RUB.\nНа Вашем балансе {money_value} RUB. \nУслуга оплачена.')
+                await callback.answer(f'Цена за это составит {price} RUB.\nНа Вашем балансе {money_value} RUB. \nУслуга оплачена.', reply_markup=nav.back_from_description())
             else:
                 cursor.execute("UPDATE users SET violations= violations + 1 WHERE user_id=?;", (user_id, ))
                 cursor.execute("UPDATE users SET count_orders= count_orders + 1 WHERE user_id=?;", (user_id, ))
-                await callback.answer(f'Цена за это составит {price} RUB.\nНа Вашем балансе {money_value} RUB. \nУслуга оплачена.\nВ Вашем сообщении замечено нарушение, если Вы считаете, что это ошибка, обратитесь к Администрации.')
+                await callback.answer(f'Цена за это составит {price} RUB.\nНа Вашем балансе {money_value} RUB. \nУслуга оплачена.\nВ Вашем сообщении замечено нарушение, если Вы считаете, что это ошибка, обратитесь к Администрации.', reply_markup=nav.back_from_description())
             db.conn.commit()
         else:
-            await callback.answer(f'На Вашем счету недостаточно средств. \n Цена за это составит {price} RUB.\n На Вашем балансе {money_value} RUB. \n')
+            await callback.answer(f'На Вашем счету недостаточно средств. \n Цена за это составит {price} RUB.\n На Вашем балансе {money_value} RUB. \n', reply_markup=nav.unsucces_payment())
             db.conn.commit()
     else:
-        await callback.answer(f'Случилась техническая ошибка.')
+        await callback.answer(f'Случилась техническая ошибка.', reply_markup=nav.back_from_description)
         db.conn.commit()
     await state.clear()
-
-
-    
-
     db.conn.commit()
 
 

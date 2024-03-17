@@ -11,5 +11,7 @@ price_map = {
     'sec_fifteen_voicevideo_pressed': 15,
     'sec_fourty_voicevideo_pressed': 40,
     'sec_sixty_voicevideo_pressed': 60,
-
+    #Созвоны
+    'videocall_hired': 1000,
+    'videocall_nude_hired': 750,
 }

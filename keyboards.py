@@ -24,11 +24,15 @@ hire_video_button = InlineKeyboardButton(text='Видео', callback_data='video
 hire_nude_photo_button = InlineKeyboardButton(text='Фото 18+', callback_data='nude_photo_hired')
 hire_nude_video_button = InlineKeyboardButton(text='Видео 18+', callback_data='nude_video_hired')
 hire_videocall_button = InlineKeyboardButton(text='Видео-звонки', callback_data='videocall_hired')
-hire_nude_videocall_button = InlineKeyboardButton(text='Видео-звонки 18+', callback_data='nude_videocall_hired')
+hire_videocall_nude_button = InlineKeyboardButton(text='Видео-звонки 18+', callback_data='videocall_nude_hired')
 
 #Список переменных для авторизированных пользователей
 worker_button = InlineKeyboardButton(text='Меню работника', callback_data='worker_pressed')
 admin_button = InlineKeyboardButton(text='Меню Админа', callback_data='admin_pressed')
+
+#да или нет
+yes_button = InlineKeyboardButton(text='Подтверждаю', callback_data='yes_press')
+no_button = InlineKeyboardButton(text='Передумал', callback_data='no_press')
 
 #Список переменных для заказа
 fifteen_sec_button_voice = InlineKeyboardButton(text='До 15 секунд', callback_data='sec_fifteen_voice_pressed')
@@ -41,6 +45,7 @@ one_min_button_video = InlineKeyboardButton(text='До 1 минуты', callback
 fifteen_sec_button_voicevideo = InlineKeyboardButton(text='До 15 секунд', callback_data='sec_fifteen_voicevideo_pressed')
 fourty_sec_button_voicevideo = InlineKeyboardButton(text='До 40 секунд', callback_data='sec_fourty_voicevideo_pressed')
 one_min_button_voicevideo = InlineKeyboardButton(text='До 1 минуты', callback_data='sec_sixty_voicevideo_pressed')
+
 
 #Переменные в виде готовых кнопок меню, InlineKeyboardButton отвечает за кнопки под сообщениями, в text мы задаем текст переменной 
 #В callback_data содержится данные, которые получает бот при нажатии на них.
@@ -57,22 +62,7 @@ main_back_inline = InlineKeyboardButton(text=main_back_text, callback_data='main
 #Главное меню покупателя, присутвует разделение по строчкам с помощью квадратных скобок.
 def main_menu():
     buttons = [
-        [
-            forgl,
-            forder
-        ],
-        [
-            referal,
-            mbalance
-        ],
-        [
-            peoplet,
-            apeople
-        ],
-        [
-            sform,
-            idesk
-        ]
+        [forgl,forder],[referal,mbalance],[peoplet,apeople,],[sform,idesk]
     ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
@@ -101,7 +91,7 @@ def fasthire_menu():
         ],
         [
             hire_videocall_button,
-            hire_nude_videocall_button
+            hire_videocall_nude_button
         ],
         [
             main_back_inline
@@ -202,9 +192,29 @@ def choose_videovoice_duration():
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
 
+#def choose_media_format():
+#    buttons = [[media_with_face_button, media_without_face_button], [back_to_buy_menu]]
+#    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+#    return keyboard
+
 def back_from_description():
     buttons = [
-        [forder]
+        [main_back_inline]
+    ]
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
+
+def unsucces_payment():
+    buttons = [
+        [mbalance, forder]
+    ]
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    return keyboard
+
+#не используется)
+def yes_or_no_menu():
+    buttons = [
+        [yes_button, no_button]
     ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     return keyboard
