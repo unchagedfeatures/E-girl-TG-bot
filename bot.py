@@ -34,21 +34,10 @@ class Form(StatesGroup):
 class Orders(StatesGroup):
     order_type = State()
 
-async def check_username(callback: types.CallbackQuery):
-    pattern = r'@?\s*([\w.]+)\s*'
-    match = re.match(pattern, callback.from_user.username)
-    if match:
-        # Возвращаем найденное имя пользователя без символа '@' и лишних пробелов
-        return match.group(1)
-    else:
-        return None
-
-
 
 @dp.message(StateFilter(Form.description), F.text)
 async def edit_description(callback: types.CallbackQuery, state: FSMContext):
-    cleaned_username = check_username(callback.from_user.username)
-    if str(cleaned_username) or "@" or "_" in callback.text:
+    if str(callback.from_user.username) in callback.text:
         BadUser = True
     else:
         BadUser = False

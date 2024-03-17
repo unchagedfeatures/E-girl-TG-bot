@@ -167,6 +167,6 @@ async def hiring_video_menu(callback: types.CallbackQuery):
 @router.callback_query(lambda query: query.data.startswith('sec'))
 async def write_voice_description(callback: types.CallbackQuery, state: FSMContext):
     await state.update_data(what_ordered=callback.data)
-    await callback.message.answer('Напишите текст для аудиосообщения',
+    await callback.message.answer('Напишите текст',
                                   reply_markup=ReplyKeyboardRemove())
     await state.set_state(Form.description)
