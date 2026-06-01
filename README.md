@@ -1,58 +1,160 @@
-# 🎭 Telegram bot for voice/video/photo hire
-Многофункциональный Telegram бот на Aiogram с использованием SQLite для хранения данных. Бот предоставляет широкий спектр услуг и имеет удобный интерфейс для пользователей, исполнителей и администраторов.
+# Telegram Creator Marketplace Bot
 
-### 🌟 Основные возможности
+Telegram-based creator marketplace bot with user orders, performer profiles, internal wallet, referrals, rewards, and admin moderation.
 
-🎤 Запись голосовых сообщений с заданным текстом
+This project is a marketplace-style Telegram bot where users can request personalized digital services from creators, while admins manage users, orders, balances, and platform activity. The focus of the project is on marketplace logic, role-based flows, monetization mechanics, and Telegram UX.
 
-📹 Отправка видеосообщений
+## Key Features
 
-🖼️ Отправка фото или видео с пожеланиями пользователя
+### User Side
 
-👥 Реферальная система
+* Telegram onboarding flow
+* User profile and balance
+* Browse available creators/services
+* Create custom service requests
+* Track order status
+* Receive updates and notifications
+* Referral rewards
+* Internal wallet and reward balance
 
-💰 Внутренний кошелек с виртуальной валютой
+### Creator / Performer Side
 
-⏱️ Выбор длительности видеороликов и голосовых сообщений
+* Creator profile flow
+* Receive and manage assigned orders
+* Accept or decline requests
+* Update order progress
+* Track completed tasks
+* Receive internal rewards or balance updates
 
-👤 Панель пользователя
+### Admin Side
 
-💼 Панель исполнителя
+* User management
+* Creator management
+* Order moderation
+* Balance and wallet control
+* Referral tracking
+* Platform statistics
+* Broadcast messages
+* Manual review and support workflows
 
-🚀 Панель администратора
+## Marketplace Logic
 
+The bot includes core marketplace mechanics:
 
+* Multi-role system: users, creators, admins
+* Order lifecycle management
+* Internal wallet and reward accounting
+* Referral-based growth mechanics
+* Admin moderation for safety and quality control
+* Status-based notifications
+* Task and request tracking
 
-### 🛠️ Технологии
+## Tech Stack
 
-**Python**
+* Python
+* Aiogram
+* SQLite
+* Telegram Bot API
+* Async handlers
+* Role-based command flows
 
-**Aiogram**
+## Architecture Overview
 
-**SQLite**
+The project is organized around Telegram bot flows and marketplace logic:
 
-### 📊 Текущий функционал
+* `bot.py` — main Telegram bot entry point
+* `handlers/` — user, creator, admin, order, and wallet flows
+* `keyboards/` — inline and reply keyboards
+* `database/` — database access and storage logic
+* `config.py` — configuration and environment variables
+* `states/` — finite-state-machine flows for multi-step actions
 
-✅ Обработка голосовых сообщений
+## Why I Built It
 
-✅ Система заказов
+I built this project to practice building a real marketplace product inside Telegram.
 
-✅ Различные панели управления
+The main challenge was not just creating a bot, but designing a complete flow with different user roles, order states, referrals, internal monetization, moderation, and admin tools. It helped me understand how to structure Telegram products that go beyond simple commands and behave more like lightweight platforms.
 
-✅ Реферальная система
+## What I Learned
 
-✅ Внутренний кошелек
+* Building multi-role Telegram bot systems
+* Designing user, creator, and admin flows
+* Managing order states and marketplace logic
+* Implementing internal wallet mechanics
+* Creating referral and reward systems
+* Handling moderation and admin workflows
+* Structuring larger Aiogram-based projects
 
-✅ База данных пользователей
+## Example Use Cases
 
-✅ Выбор длительности контента
+* Creator marketplace MVP
+* Digital service order platform
+* Telegram-based task marketplace
+* Referral-driven community product
+* Internal reward and monetization system
+* Prototype for creator economy workflows
 
-✅ Полностью рабочая среда для пользователей
+## Setup
 
-### 🚀 Планы на будущее
+### 1. Clone the repository
 
-📈 Реализация системы "Топ пользователей"
+```bash
+git clone https://github.com/unchangedfeatures/telegram-creator-marketplace-bot.git
+cd telegram-creator-marketplace-bot
+```
 
-🔍 Расширение функций модерации
+### 2. Create a virtual environment
 
-🎨 Добавление отправки видео/фото
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+
+On Windows:
+
+```bash
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Configure environment variables
+
+Create a `.env` file:
+
+```env
+BOT_TOKEN=your_telegram_bot_token
+ADMIN_ID=your_telegram_admin_id
+```
+
+### 5. Run the bot
+
+```bash
+python bot.py
+```
+
+## Security and Privacy Notes
+
+* Do not commit bot tokens or private credentials
+* Remove real user data before publishing
+* Keep moderation tools enabled in production
+* Use clear platform rules for users and creators
+* Restrict admin commands to trusted Telegram IDs
+
+## Project Status
+
+This is a portfolio version of a Telegram marketplace bot. The public version is focused on demonstrating marketplace architecture, role-based bot flows, order management, referral mechanics, internal wallet logic, and admin moderation.
+
+## Future Improvements
+
+* Add PostgreSQL support
+* Add web admin panel
+* Add automated tests for order and wallet logic
+* Add creator ratings and reviews
+* Add payment provider integration
+* Add analytics dashboard
+* Improve moderation and reporting tools
